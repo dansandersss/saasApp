@@ -15,7 +15,7 @@ const CTA = () => {
           through voice conversations that feel natural and fun.
         </p>
         <Image src="images/cta.svg" alt="CTA" width={362} height={232} />
-        <button className="btn-primary">
+        <button className="btn-primary w-full flex justify-center flex-row items-center">
           <Image src="/icons/plus.svg" alt="Plus" width={12} height={12} />
           <Link href="companions/new">
             <p>Build a New Companion</p>

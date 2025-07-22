@@ -185,8 +185,8 @@ const CompanionComponent = ({
               className={cn(
                 "rounded-lg py-2 cursor-pointer transition-colors w-full text-white",
                 callStatus === CallStatus.ACTIVE
-                  ? "bg-red-700 "
-                  : "bg-primary ",
+                  ? "bg-red-700 hover:bg-red-800 transition-colors ease-in-out duration-200"
+                  : "bg-orange-500 hover:bg-orange-600 transition-colors ease-in-out duration-200",
                 callStatus === CallStatus.CONNECTING && "animate-pulse"
               )}
               onClick={

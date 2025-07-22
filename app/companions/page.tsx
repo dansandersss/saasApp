@@ -1,20 +1,30 @@
 import CompanionCard from "@/components/CompanionCard";
 import SearchInput from "@/components/SearchInput";
 import SubjectFilter from "@/components/SubjectFilter";
-import { getAllCompanions } from "@/lib/actions/companion.actions";
+import {
+  getAllCompanions,
+  getBookmarkedCompanions,
+} from "@/lib/actions/companion.actions";
 import { getSubjectColor } from "@/lib/utils";
+import { auth } from "@clerk/nextjs/server";
 
 const CompanionsLibrary = async ({ searchParams }: SearchParams) => {
   const filters = await searchParams;
-  const subject = filters.subject ? filters.subject : "";
-  const topic = filters.topic ? filters.topic : "";
+  const subject = filters.subject ?? "";
+  const topic = filters.topic ?? "";
 
-  const companions = await getAllCompanions({
-    subject,
-    topic,
-  });
+  // Получаем userId через Clerk (серверный)
+  const { userId } = await auth();
 
-  // console.log("Companions:", companions);
+  // Получаем всех companions по фильтрам
+  const companions = await getAllCompanions({ subject, topic });
+
+  // Если пользователь авторизован, получаем его bookmarked companions
+  let bookmarkedIds = new Set<string>();
+  if (userId) {
+    const bookmarkedCompanions = await getBookmarkedCompanions(userId);
+    bookmarkedIds = new Set(bookmarkedCompanions.map((c) => c.id));
+  }
 
   return (
     <>
@@ -31,6 +41,7 @@ const CompanionsLibrary = async ({ searchParams }: SearchParams) => {
               key={companion.id}
               {...companion}
               color={getSubjectColor(companion.subject)}
+              bookmarked={bookmarkedIds.has(companion.id)}
             />
           ))}
         </section>

@@ -17,7 +17,9 @@ const NavItems = () => {
       <nav className="flex items-center gap-4">
         {navItems.map(({ label, href }) => (
           <Link
-            className={cn(pathname === href && "text-primary font-semibold")}
+            className={`${cn(
+              pathname === href && "text-orange-500 font-semibold"
+            )} cursor-pointer hover:text-orange-500 transition-colors ease-in-out duration-200`}
             href={href}
             key={label}
           >
